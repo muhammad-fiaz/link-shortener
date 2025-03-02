@@ -3,12 +3,15 @@
   "version": "1.0.0",
   "scripts": {
     "login": "vercel login",
-    "dev": "vercel dev && bun run --hot src/index.ts",
-    "build": "vercel build && bun build src/index.ts --outdir=dist",
-    "deploy": "vercel deploy --prod",
+    "vercel:dev": "vercel dev && bun run --hot src/index.ts",
+    "vercel:build": "vercel build && bun build src/index.ts --outdir=dist",
+    "vercel:deploy": "vercel deploy --prod",
+    "vercel:start": "bun run dist/index.js",
+    "dev": "bun run --hot src/index.ts",
+    "build": "bun build src/index.ts --outdir=dist",
     "start": "bun run dist/index.js",
     "migrate:generate": "npx drizzle-kit generate",
-    "migrate:push": "npx drizzle-kit push --yes"
+    "migrate:push": "npx drizzle-kit push"
   },
   "type": "module",
   "dependencies": {

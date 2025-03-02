@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>URL Shortener</title>
+    <style>
+        .fade-out {
+            animation: fadeOut 2s forwards;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+
+<div class="absolute top-4 right-4 flex space-x-4">
+    <button onclick="logout()" class="bg-red-500 text-white py-2 px-4 rounded">Logout</button>
+    <button onclick="goToManage()" class="bg-blue-500 text-white py-2 px-4 rounded">Manage</button>
+</div>
+
+<div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+    <h3 class="text-2xl font-semibold mb-4 text-center text-black">Shorten a URL</h3>
+    <input type="text" id="urlInput" placeholder="Enter URL" class="w-full p-3 border rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    <button onclick="shortenURL()" class="w-full bg-blue-500 text-white py-3 rounded hover:bg-blue-600 transition">Shorten</button>
+    <div id="shortenedLinkContainer" class="hidden mt-4 p-4 bg-gray-200 rounded text-center">
+        <p class="text-black/50">Shortened URL: <span id="shortUrlText" class="text-blue-500 cursor-pointer" onclick="copyToClipboard()"></span></p>
+    </div>
+    <div id="copyMessage" class="hidden mt-2 text-green-500 text-center">Shortened URL copied to clipboard!</div>
+</div>
+
+
+
+<script>
+    async function shortenURL() {
+        const url = document.getElementById("urlInput").value;
+        const res = await fetch("/shorten", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ url }),
+        });
+
+        if (res.ok) {
+            const { shortUrl } = await res.json();
+            const shortUrlTextElement = document.getElementById("shortUrlText");
+            shortUrlTextElement.innerText = shortUrl;
+            document.getElementById("shortenedLinkContainer").classList.remove("hidden");
+        } else {
+            alert("Failed to shorten URL");
+        }
+    }
+
+    function copyToClipboard() {
+        const shortUrlTextElement = document.getElementById("shortUrlText");
+        const textToCopy = shortUrlTextElement.innerText;
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            const copyMessageElement = document.getElementById("copyMessage");
+            copyMessageElement.classList.remove("hidden");
+            copyMessageElement.classList.add("fade-out");
+            setTimeout(() => {
+                copyMessageElement.classList.add("hidden");
+                copyMessageElement.classList.remove("fade-out");
+            }, 2000);
+        });
+    }
+
+    function goToManage() {
+        window.location.href = "/manage.html";
+    }
+
+    async function checkLogin() {
+        const res = await fetch("/verify");
+        if (!res.ok) {
+            window.location.href = "/login.html";
+        }
+    }
+
+    async function logout() {
+        const res = await fetch("/logout", {
+            method: "POST",
+        });
+
+        if (res.ok) {
+            window.location.href = "/login.html";
+        } else {
+            alert("Failed to logout");
+        }
+    }
+
+    checkLogin();
+</script>
+</body>
+</html>
