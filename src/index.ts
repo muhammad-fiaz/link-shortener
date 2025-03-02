@@ -1,15 +1,21 @@
-import { Hono } from 'hono'
-import { cors } from 'hono/cors'
-import { handleShortURL, createShortURL } from './routes'
+import { Hono } from "hono";
+import { serveStatic } from "hono/bun";
+import { createShortURL, handleShortURL } from "./routes";
+import { login, verifyAuth } from "./auth";
 
-const app = new Hono()
+const app = new Hono();
 
-// Enable CORS
-app.use(cors())
+// Serve Static Files
+app.use("/", serveStatic({ root: "./public" }));
 
-// API Routes
-app.get('/', (c) => c.text('Hono.js Link Shortener API'))
-app.post('/shorten', createShortURL)
-app.get('/:shortCode', handleShortURL)
+// Authentication
+app.post("/login", login);
 
-export default app
+// Protected Routes
+app.post("/shorten", verifyAuth, createShortURL);
+app.get("/:shortCode", handleShortURL);
+
+export default {
+    port: 3000,
+    fetch: app.fetch,
+};
