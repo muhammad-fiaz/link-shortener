@@ -11,7 +11,7 @@
     "build": "bun build src/index.ts --outdir=dist",
     "start": "bun run dist/index.js",
     "migrate:generate": "npx drizzle-kit generate",
-    "migrate:push": "npx drizzle-kit push --yes"
+    "migrate:push": "npx drizzle-kit push"
   },
   "type": "module",
   "dependencies": {
