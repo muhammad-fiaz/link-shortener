@@ -1,27 +1,40 @@
 {
   "name": "link-shortener",
+  "version": "1.0.0",
   "scripts": {
-    "dev": "bun run --hot src/index.ts",
-    "build": "bun build src/index.ts --outdir=dist",
+    "login": "vercel login",
+    "dev": "vercel dev && bun run --hot src/index.ts",
+    "build": "vercel build && bun build src/index.ts --outdir=dist",
+    "deploy": "vercel deploy --prod",
     "start": "bun run dist/index.js",
     "migrate:generate": "npx drizzle-kit generate",
     "migrate:push": "npx drizzle-kit push --yes"
   },
+  "type": "module",
   "dependencies": {
-    "@neondatabase/serverless": "^0.10.4",
-    "bcryptjs": "^3.0.2",
-    "drizzle-orm": "^0.40.0",
     "hono": "^4.7.2",
+    "drizzle-orm": "^0.40.0",
+    "postgres": "^3.4.5",
     "jsonwebtoken": "^9.0.2",
-    "neon": "^2.0.0",
-    "postgres": "^3.4.5"
+    "bcryptjs": "^3.0.2",
+    "@neondatabase/serverless": "^0.10.4",
+    "neon": "^2.0.0"
   },
   "devDependencies": {
-    "dotenv": "^16.4.7",
     "@types/bcryptjs": "^2.4.6",
-    "@types/bun": "latest",
     "@types/jsonwebtoken": "^9.0.9",
+    "@types/bun": "latest",
+    "dotenv": "^16.4.7",
     "dotenv-cli": "^8.0.0",
-    "drizzle-kit": "^0.30.5"
+    "drizzle-kit": "^0.30.5",
+    "vercel": "latest"
+  },
+  "homepage": "https://github.com/muhammad-fiaz/link-shortener",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/muhammad-fiaz/link-shortener.git"
+  },
+  "bugs": {
+    "url": "https://github.com/muhammad-fiaz/link-shortener/issues"
   }
 }
