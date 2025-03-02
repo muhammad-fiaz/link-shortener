@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Manage URLs</title>
+
+    <style>
+        .table-container {
+            overflow-x: auto;
+        }
+        .table-responsive {
+            min-width: 600px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+
+<div class="absolute top-4 right-4">
+    <button onclick="logout()" class="bg-red-500 text-white py-2 px-4 rounded shadow hover:bg-red-600 transition">Logout</button>
+</div>
+
+<div class="bg-white p-8 rounded-lg shadow-md w-full max-w-6xl table-container">
+    <h3 class="text-2xl font-semibold mb-6 text-center text-gray-800">Manage URLs</h3>
+    <div class="table-responsive">
+        <table class="min-w-full bg-white border-collapse">
+            <thead class="bg-gray-200">
+            <tr>
+                <th class="py-2 px-3 border-b-2 border-gray-300">Shortened URL</th>
+                <th class="py-2 px-3 border-b-2 border-gray-300">Original URL</th>
+                <th class="py-2 px-3 border-b-2 border-gray-300">Actions</th>
+            </tr>
+            </thead>
+            <tbody id="urlList">
+            <!-- URL rows will be inserted here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    async function fetchURLs() {
+        const res = await fetch("/urls");
+        if (res.ok) {
+            const urls = await res.json();
+            const urlList = document.getElementById("urlList");
+            urlList.innerHTML = "";
+            urls.forEach(url => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td class="py-2 px-3 border-b break-all"><a href="${url.shortUrl}" class="text-blue-500 hover:underline" target="_blank">${url.shortUrl}</a></td>
+                    <td class="py-2 px-3 border-b break-all">${url.originalUrl}</td>
+<td class="py-2 px-3 border-b break-all">
+    <div class="flex space-x-2 items-center justify-center">
+        <button onclick="modifyURL('${url.shortCode}')" class="bg-yellow-500 text-white py-1 px-3 rounded shadow hover:bg-yellow-600 transition"><i class="fas fa-edit"></i></button>
+        <button onclick="deleteURL('${url.shortCode}')" class="bg-red-500 text-white py-1 px-3 rounded shadow hover:bg-red-600 transition"><i class="fas fa-trash-alt"></i></button>
+    </div>
+</td>
+                `;
+                urlList.appendChild(row);
+            });
+        } else {
+            alert("Failed to fetch URLs");
+        }
+    }
+
+    async function deleteURL(shortCode) {
+        const res = await fetch(`/urls/${shortCode}`, {
+            method: "DELETE",
+        });
+        if (res.ok) {
+            fetchURLs();
+        } else {
+            alert("Failed to delete URL");
+        }
+    }
+
+    async function modifyURL(shortCode) {
+        const newUrl = prompt("Enter the new original URL:");
+        if (newUrl) {
+            const res = await fetch(`/urls/${shortCode}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ originalUrl: newUrl }),
+            });
+            if (res.ok) {
+                fetchURLs();
+            } else {
+                alert("Failed to modify URL");
+            }
+        }
+    }
+
+    async function checkLogin() {
+        const res = await fetch("/verify");
+        if (!res.ok) {
+            window.location.href = "/login.html";
+        }
+    }
+
+    async function logout() {
+        const res = await fetch("/logout", {
+            method: "POST",
+        });
+
+        if (res.ok) {
+            window.location.href = "/login.html";
+        } else {
+            alert("Failed to logout");
+        }
+    }
+
+    checkLogin();
+    fetchURLs();
+</script>
+</body>
+</html>

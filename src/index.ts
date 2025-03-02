@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { serveStatic } from "hono/bun";
-import { createShortURL, handleShortURL } from "./routes";
+import { createShortURL, handleShortURL, fetchURLs, deleteURL, modifyURL } from "./routes";
 import { login, verifyAuth, checkAuth, logout } from "./auth";
 
 const app = new Hono();
@@ -15,6 +15,9 @@ app.post("/logout", logout);
 
 // Protected Routes
 app.post("/shorten", verifyAuth, createShortURL);
+app.get("/urls", verifyAuth, fetchURLs);
+app.delete("/urls/:shortCode", verifyAuth, deleteURL);
+app.put("/urls/:shortCode", verifyAuth, modifyURL);
 app.get("/:shortCode", handleShortURL);
 
 export default {
