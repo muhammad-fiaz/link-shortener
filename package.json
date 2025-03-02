@@ -1,12 +1,17 @@
 {
   "name": "link-shortener",
   "scripts": {
-    "dev": "bun run --hot src/index.ts",
+    "dev": "bun run --hot src/server.ts",
     "build": "bun build src/index.ts --outdir=dist",
     "start": "bun run dist/index.js"
   },
   "dependencies": {
-    "hono": "^4.7.2"
+    "@neondatabase/serverless": "^0.10.4",
+    "dotenv": "^16.4.7",
+    "drizzle-orm": "^0.40.0",
+    "hono": "^4.7.2",
+    "neon": "^2.0.0",
+    "postgres": "^3.4.5"
   },
   "devDependencies": {
     "@types/bun": "latest"
