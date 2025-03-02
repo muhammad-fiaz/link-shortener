@@ -5,22 +5,31 @@ import { login, verifyAuth, checkAuth, logout } from "./auth";
 
 const app = new Hono();
 
-// Serve Static Files (Including index.html)
-app.use("*", serveStatic({ root: "./public", rewriteRequestPath: (path) => (path === "/" ? "/login.html" : path) }));
+// 🔹 Serve Static Files (Including index.html)
+app.use(
+    "*",
+    serveStatic({
+        root: "./public",
+        rewriteRequestPath: (path) => (path === "/" ? "/login.html" : path),
+    })
+);
 
-// Authentication
-app.post("/login", login);
-app.get("/verify", checkAuth);
-app.post("/logout", logout);
+// 🔹 Authentication Routes
+const auth = new Hono();
+auth.post("/login", login);
+auth.get("/verify", checkAuth);
+auth.post("/logout", logout);
+app.route("/api/auth", auth);
 
-// Protected Routes
-app.post("/shorten", verifyAuth, createShortURL);
-app.get("/urls", verifyAuth, fetchURLs);
-app.delete("/urls/:shortCode", verifyAuth, deleteURL);
-app.put("/urls/:shortCode", verifyAuth, modifyURL);
+// 🔹 Protected API Routes
+const api = new Hono();
+api.post("/shorten", verifyAuth, createShortURL);
+api.get("/urls", verifyAuth, fetchURLs);
+api.delete("/urls/:shortCode", verifyAuth, deleteURL);
+api.put("/urls/:shortCode", verifyAuth, modifyURL);
+app.route("/api", api);
+
+// 🔹 Shortened URL Handling
 app.get("/:shortCode", handleShortURL);
 
-export default {
-    port: 3000,
-    fetch: app.fetch,
-};
+export default app;
