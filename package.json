@@ -13,6 +13,7 @@
     "migrate:generate": "npx drizzle-kit generate",
     "migrate:push": "npx drizzle-kit push"
   },
+  "main": "src/index.ts",
   "type": "module",
   "dependencies": {
     "hono": "^4.7.2",
@@ -32,6 +33,7 @@
     "drizzle-kit": "^0.30.5",
     "vercel": "latest"
   },
+  "license": "MIT",
   "homepage": "https://github.com/muhammad-fiaz/link-shortener",
   "repository": {
     "type": "git",

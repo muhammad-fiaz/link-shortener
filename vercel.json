@@ -1,13 +1,9 @@
 {
   "version": 2,
-  "public": true,
   "builds": [
     {
       "src": "dist/index.js",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": ["public/**", "drizzle/**"]
-      }
+      "use": "@vercel/node"
     },
     {
       "src": "public/**",
@@ -16,28 +12,6 @@
   ],
   "routes": [
     { "src": "/api/(.*)", "dest": "/dist/index.js" },
-
-    { "src": "/", "dest": "/public/login.html" },
-    { "src": "/login", "dest": "/public/login.html" },
-    { "src": "/manage", "dest": "/public/manage.html" },
-    { "src": "/shorten", "dest": "/public/shorten.html" },
-    { "src": "/verify", "dest": "/public/shorten.html" },
-    { "src": "/urls", "dest": "/public/manage.html" },
-    { "src": "/logout", "dest": "/public/manage.html" },
-
-    { "src": "/login.html", "dest": "/public/login.html" },
-    { "src": "/manage.html", "dest": "/public/manage.html" },
-    { "src": "/shorten.html", "dest": "/public/shorten.html" },
-    { "src": "/verify.html", "dest": "/public/shorten.html" },
-    { "src": "/urls.html", "dest": "/public/manage.html" },
-    { "src": "/logout.html", "dest": "/public/manage.html" },
-
-    { "src": "/shorten/(.*)", "dest": "/public/shorten.html" },
-    { "src": "/manage/(.*)", "dest": "/public/manage.html" },
-
-    { "src": "/urls/(?<shortCode>[^/]+)", "dest": "/dist/index.js" },
-    { "src": "/(?<shortCode>[^/]+)", "dest": "/dist/index.js" },
-
     { "src": "/(.*)", "dest": "/public/$1" }
   ]
 }
