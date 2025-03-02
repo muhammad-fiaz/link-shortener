@@ -4,7 +4,7 @@ import { urls } from "./schema";
 import { randomUUID } from "crypto";
 import { eq } from "drizzle-orm";
 
-const BASE_URL = process.env.NODE_ENV === 'development' ? "http://localhost:3000" : "https://link.muhammadfiaz.com";
+const BASE_URL = process.env.NODE_ENV === 'development' ? "http://localhost:3000" : process.env.BASE_URL;
 
 // Create Short URL
 export async function createShortURL(c: Context) {
