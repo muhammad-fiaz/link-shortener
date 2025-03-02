@@ -53,12 +53,6 @@ bun run start
 bun run deploy
 ```
 
-## 📜 API Endpoints
-| Method | Endpoint      | Description                        | Auth Required |
-|--------|-------------|--------------------------------|--------------|
-| `POST` | `/login`     | Authenticate user & get JWT   | ❌ No        |
-| `POST` | `/shorten`   | Create a short URL            | ✅ Yes       |
-| `GET`  | `/:shortCode` | Redirect to original URL      | ❌ No        |
 
 ## 📜 License
 This project is open-source and licensed under the **MIT License**.
