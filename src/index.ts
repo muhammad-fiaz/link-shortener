@@ -5,8 +5,8 @@ import { login, verifyAuth } from "./auth";
 
 const app = new Hono();
 
-// Serve Static Files
-app.use("/", serveStatic({ root: "./public" }));
+// Serve Static Files (Including index.html)
+app.use("*", serveStatic({ root: "./public", rewriteRequestPath: (path) => (path === "/" ? "/index.html" : path) }));
 
 // Authentication
 app.post("/login", login);

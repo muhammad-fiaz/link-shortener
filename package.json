@@ -1,16 +1,15 @@
 {
   "name": "link-shortener",
   "scripts": {
-    "dev": "npm run --hot src/index.ts",
-    "build": "npm build src/index.ts --outdir=dist",
-    "start": "npm run dist/index.js",
+    "dev": "bun run --hot src/index.ts",
+    "build": "bun build src/index.ts --outdir=dist",
+    "start": "bun run dist/index.js",
     "migrate:generate": "npx drizzle-kit generate",
-    "migrate:push": " npx drizzle-kit push --yes\n"
+    "migrate:push": "npx drizzle-kit push --yes"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.10.4",
     "bcryptjs": "^3.0.2",
-    "dotenv": "^16.4.7",
     "drizzle-orm": "^0.40.0",
     "hono": "^4.7.2",
     "jsonwebtoken": "^9.0.2",
@@ -18,6 +17,7 @@
     "postgres": "^3.4.5"
   },
   "devDependencies": {
+    "dotenv": "^16.4.7",
     "@types/bcryptjs": "^2.4.6",
     "@types/bun": "latest",
     "@types/jsonwebtoken": "^9.0.9",
